@@ -1,0 +1,24 @@
+{
+  "name": "jakab_adam_05_16",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ILoveMoney714/Jakab_Adam_05_16.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ILoveMoney714/Jakab_Adam_05_16/issues"
+  },
+  "homepage": "https://github.com/ILoveMoney714/Jakab_Adam_05_16#readme",
+  "description": "",
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
