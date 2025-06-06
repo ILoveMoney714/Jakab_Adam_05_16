@@ -1,25 +1,33 @@
 
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const app = express();
 
 app.use(express.json());
 
-const link = 'https://jsonplaceholder.typicode.com/users';
+// Lokális JSON fájl elérési útja
+const dataFilePath = path.join(__dirname, 'users.json');
 
+// JSON fájl beolvasása
 function readUsers() {
-  return JSON.parse(fs.readFileSync(link));
-}
-function writeUsers(users) {
-  fs.writeFileSync(link, JSON.stringify(users, null, 2));
+  if (!fs.existsSync(dataFilePath)) return [];
+  const data = fs.readFileSync(dataFilePath, 'utf-8');
+  return JSON.parse(data || '[]');
 }
 
+// JSON fájlba írás
+function writeUsers(users) {
+  fs.writeFileSync(dataFilePath, JSON.stringify(users, null, 2), 'utf-8');
+}
+
+// Összes felhasználó lekérdezése
 app.get('/', (req, res) => {
   const users = readUsers();
   res.json(users);
 });
 
-
+// Egy felhasználó lekérdezése ID alapján
 app.get('/users/:id', (req, res) => {
   const users = readUsers();
   const user = users.find(u => u.id == req.params.id);
@@ -27,7 +35,7 @@ app.get('/users/:id', (req, res) => {
   res.json(user);
 });
 
-
+// Új felhasználó hozzáadása
 app.post('/ujuser', (req, res) => {
   const users = readUsers();
   const newUser = req.body;
@@ -45,9 +53,9 @@ app.post('/ujuser', (req, res) => {
   res.status(201).json(newUser);
 });
 
-
+// Felhasználó törlése ID alapján
 app.delete('/delete/:id', (req, res) => {
-  let users = readUsers();
+  const users = readUsers();
   const id = parseInt(req.params.id);
   const newUsers = users.filter(u => u.id !== id);
 
@@ -59,6 +67,7 @@ app.delete('/delete/:id', (req, res) => {
   res.json({ message: `Felhasználó (ID: ${id}) törölve.` });
 });
 
+// Szerver indítása
 app.listen(3000, () => {
   console.log('Szerver fut a http://localhost:3000 címen');
 });
